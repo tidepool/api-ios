@@ -1,0 +1,14 @@
+xcodeproj 'TPTidePoolAPITests'
+workspace '../TPTidePoolAPI'
+inhibit_all_warnings!
+
+target :ios do
+  platform :ios, '6.0'
+  link_with 'Tests'
+
+  pod 'OCMock', '~> 2.1.1'
+  pod 'Expecta', '~> 0.2.1'
+  pod 'AFNetworking', '~> 1.3.2'
+  pod 'TPTidePoolAPI', :path => '../'
+
+end

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>clientID</key>
+	<string>3e372449d494eb6dc7d74cd3da1d6eedd50c7d98f3dedf1caf02960a9a260fb1</string>
+	<key>clientSecret</key>
+	<string>3e4da2177beee0d8ec458480526b3716047b3ff0df3362262183f6841253a706</string>
+	<key>apiServerURL</key>
+	<string>http://api-server.dev/</string>
+	<key>apiEndpoint</key>
+	<string>api/v1</string>
+	<key>authorizeEndpoint</key>
+	<string>oauth/authorize</string>
+</dict>
+</plist>
