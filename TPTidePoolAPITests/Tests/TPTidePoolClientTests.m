@@ -7,6 +7,7 @@
 //
 
 #import "TPTidePoolClientTests.h"
+#import "TPTestUtils.h"
 
 @implementation TPTidePoolClientTests
 - (void)setUp {
@@ -24,7 +25,44 @@
 - (void)testLoadingSessionFromSettingsFile {
   TPTidePoolClient *session = [TPTidePoolClient sharedInstance];
   
-  expect([[session apiServerURL] absoluteString]).to.equal(@"http://api-server.dev/api/v1");
+  expect([session apiServerURL]).to.equal(@"http://api-server.dev/");
+}
+
+- (void)testLoggingInUsingEmailAndPassword {
+  [Expecta setAsynchronousTestTimeout:5];
+  
+  TPTidePoolClient *session = [TPTidePoolClient sharedInstance];
+  
+  __block NSString *email;
+  __block NSString *errorDesc;
+  [session loginWithEmail:@"user@example.com" password:@"tidepool" success:^(TPUser *user) {
+      email = user.email;
+    }
+    failure:^(NSError *error) {
+      errorDesc = [error description];
+    }];
+  
+  expect(email).will.equal(@"user@example.com");
+
+}
+
+- (void) testRegisterUsingEmailAndPassword {
+  [Expecta setAsynchronousTestTimeout:5];
+  
+  TPTidePoolClient *session = [TPTidePoolClient sharedInstance];
+  
+  NSString *guid = [TPTestUtils getUUID];
+  NSString *inputEmail = [NSString stringWithFormat:@"test_user_%@@example.com", guid ];
+  __block NSString *email;
+  __block NSString *errorDesc;
+  [session registerWithEmail:inputEmail password:@"tidepool" passwordConfirmation:@"tidepool"  success:^(TPUser *user) {
+      email = user.email;
+    }
+    failure:^(NSError *error) {
+      errorDesc = [error description];
+    }];
+  
+  expect(email).will.equal(inputEmail);
 }
 
 @end

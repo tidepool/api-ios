@@ -10,7 +10,7 @@
 	<string>http://api-server.dev/</string>
 	<key>apiEndpoint</key>
 	<string>api/v1</string>
-	<key>authorizeEndpoint</key>
-	<string>oauth/authorize</string>
+	<key>keychainServiceName</key>
+	<string>Tidepool</string>
 </dict>
 </plist>

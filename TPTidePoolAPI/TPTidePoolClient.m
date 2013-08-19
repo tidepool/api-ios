@@ -8,12 +8,12 @@
 
 #import "TPTidePoolClient.h"
 #import "AFJSONRequestOperation.h"
+#import <SSKeychain/SSKeychain.h>
 
 @interface TPTidePoolClient()
 - (void) loadSettings;
 - (void) configureClient;
 @end
-
 
 @implementation TPTidePoolClient
 
@@ -54,14 +54,12 @@
 	if (self != nil) {
     _accessToken = nil;
     if (settings) {
-      _clientId = [settings valueForKey:@"clientId"];
+      _clientId = [settings valueForKey:@"clientID"];
       _clientSecret = [settings valueForKey:@"clientSecret"];
-      
-//      NSURL *baseURL = [NSURL URLWithString:[settings valueForKey:@"apiServerURL"]];
-//      _apiServerURL = [NSURL URLWithString:[settings valueForKey:@"apiEndpoint"] relativeToURL:baseURL];
-//      _authorizeEndpointURL = [NSURL URLWithString:[settings valueForKey:@"authorizeEndpoint"] relativeToURL:baseURL];
+      _apiServerURL = [settings valueForKey:@"apiServerURL"];
+      _keychainServiceName = [settings valueForKey:@"keychainServiceName"];
     }
-
+    [self checkAccessToken];
     [self configureClient];
   }
   return self;
@@ -71,27 +69,30 @@
   return _accessToken != nil;
 }
 
-
+- (void) checkAccessToken {
+  _accessToken = [SSKeychain passwordForService:_keychainServiceName account:_keychainServiceName];
+}
 
 - (void) configureClient {
   [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
 	[self setDefaultHeader:@"Accept" value:@"application/json"];
 	[self setDefaultHeader:@"Content-type" value:@"application/json"];
+  if (_accessToken) {
+    [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", _accessToken]];
+  }
   [self setParameterEncoding:AFJSONParameterEncoding];
 }
 
 - (void) loginWithEmail:(NSString *) email
                password:(NSString *) password
                 success:(void (^)(TPUser *user))success
-                failure:(void (^)(NSError *error))failure
-{
-  NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"password", @"grant_type",
-                                @"password", @"response_type",
-                                email, @"email",
-                                password, @"password",
-                                _clientId, @"client_id",
-                                _clientSecret, @"client_secret", nil];
+                failure:(void (^)(NSError *error))failure {
+
+  NSDictionary *params = @{@"email": email,
+                           @"password": password
+                           };
+
+  [self loginOrRegister:params success:success failure:failure];
   
 }
 
@@ -99,24 +100,22 @@
                   password:(NSString *) password
       passwordConfirmation:(NSString *) passwordConfirmation
                    success:(void (^)(TPUser *user))success
-                   failure:(void (^)(NSError *error))failure
-{
-  NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                          @"password", @"grant_type",
-                          @"password", @"response_type",
-                          email, @"email",
-                          password, @"password",
-                          _clientId, @"client_id",
-                          _clientSecret, @"client_secret", nil];
+                   failure:(void (^)(NSError *error))failure {
+
+  NSDictionary *params = @{@"email": email,
+                           @"password": password,
+                           @"password_confirmation": passwordConfirmation
+                           };
+  [self loginOrRegister:params success:success failure:failure];
   
 }
 
 
-- (void) loginWithAuthHash:(NSDictionary *) authHash
-                   success:(void (^)(TPUser *user))success
-                   failure:(void (^)(NSError *error))failure {
+- (void) loginOrRegisterWithAuthHash:(NSDictionary *) authHash
+                             success:(void (^)(TPUser *user))success
+                             failure:(void (^)(NSError *error))failure {
   
-
+  [self loginOrRegister:authHash success:success failure:failure];
 }
 
 
@@ -124,16 +123,37 @@
                  success:(void (^)(TPUser *user))success
                  failure:(void (^)(NSError *error))failure {
   
-
+  NSMutableDictionary *fullParams = @{@"grant_type": @"password",
+                                   @"response_type": @"password",
+                                   @"client_id": self.clientId,
+                                   @"client_secret": self.clientSecret
+                                   };
+  [fullParams addEntriesFromDictionary:params];
+  
   [self postPath:@"oauth/authorize"
-      parameters:params
+      parameters:fullParams
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-           NSLog(@"success");
-           TPUser *user = [self retrieveUserFromResponse:responseObject];
-           success(user);
+           NSLog(@"Success");
+           TPUser *user = nil;
+           _accessToken = [responseObject valueForKey:@"access_token"];
+           if (_accessToken) {
+             [SSKeychain setPassword:_accessToken forService:_keychainServiceName account:_keychainServiceName];
+             [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", _accessToken]];
+             user = [self retrieveUserFromResponse:responseObject];
+             success(user);
+           }
+           else {
+             NSString *desc = NSLocalizedString(@"Unable to retrieve access token", @"");
+             NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : desc };
+             
+             NSError *error = [NSError errorWithDomain:kTPTidePoolErrorDomain
+                                                  code:-101
+                                              userInfo:userInfo];
+             failure(error);
+           }
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-           NSLog(@"failure");
+           NSLog(@"Failure");
            NSLog([error description]);
            failure(error);
          }];
@@ -141,8 +161,10 @@
 }
 
 - (TPUser *) retrieveUserFromResponse:(id) responseObject {
+  NSDictionary *userHash = [responseObject valueForKey:@"user"];
+  TPUser *user = [[TPUser alloc] initWithUserHash:userHash];
   
-  return nil;
+  return user;
 }
 
 @end

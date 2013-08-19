@@ -14,6 +14,7 @@
 		188F11D817B97F49006280D9 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 188F11D717B97F49006280D9 /* Settings.plist */; };
 		188F11DC17B9B543006280D9 /* TPTidePoolClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 188F11DB17B9B543006280D9 /* TPTidePoolClientTests.m */; };
 		9AAED9EF0A7048F3BA4515F4 /* libPods-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23FAA1ED284CBC8D88FE32 /* libPods-ios.a */; };
+		BD58504517C0ABA2005952AB /* TPTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BD58504417C0ABA2005952AB /* TPTestUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		188F11DB17B9B543006280D9 /* TPTidePoolClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPTidePoolClientTests.m; sourceTree = "<group>"; };
 		26B87A9FB7E24504801E3D3B /* Pods-ios.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.xcconfig"; path = "Pods/Pods-ios.xcconfig"; sourceTree = SOURCE_ROOT; };
 		6D23FAA1ED284CBC8D88FE32 /* libPods-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD58504317C0ABA2005952AB /* TPTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPTestUtils.h; sourceTree = "<group>"; };
+		BD58504417C0ABA2005952AB /* TPTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPTestUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +85,8 @@
 				188F11C817B96524006280D9 /* Supporting Files */,
 				188F11DA17B9B543006280D9 /* TPTidePoolClientTests.h */,
 				188F11DB17B9B543006280D9 /* TPTidePoolClientTests.m */,
+				BD58504317C0ABA2005952AB /* TPTestUtils.h */,
+				BD58504417C0ABA2005952AB /* TPTestUtils.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -216,6 +221,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				188F11DC17B9B543006280D9 /* TPTidePoolClientTests.m in Sources */,
+				BD58504517C0ABA2005952AB /* TPTestUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
