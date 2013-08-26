@@ -10,18 +10,19 @@
 #import "TPTidePoolClient.h"
 
 @interface TPBase : NSObject {
-  TPTidePoolClient *apiClient;
+  TPTidePoolClient *_apiClient;
 }
 
 @property(nonatomic, readonly) NSString *urlRoot;
 
 - (id) initWithUrlRoot:(NSString *) url;
 
--(void) saveSuccess:(void (^)(id *object))success
+-(void) saveSuccess:(void (^)(id object))success
             failure:(void (^)(NSError *error))failure;
--(void) createSuccess:(void (^)(id *object))success
-              failure:(void (^)(NSError *error))failure;
--(void) deleteSuccess:(void (^)(id *object))success
+-(void) createWithParams:(NSDictionary *) params
+                 success:(void (^)(id object))success
+                 failure:(void (^)(NSError *error))failure;
+-(void) deleteSuccess:(void (^)(id object))success
               failure:(void (^)(NSError *error))failure;
 
 @end

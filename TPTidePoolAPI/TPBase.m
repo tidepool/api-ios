@@ -7,6 +7,7 @@
 //
 
 #import "TPBase.h"
+#import <objc/runtime.h>
 
 @implementation TPBase
 
@@ -20,14 +21,14 @@
 }
 
 -(void) readWithParams:(NSDictionary *)params
-               success:(void (^)(id *object))success
+               success:(void (^)(id responseObject))success
                failure:(void (^)(NSError *error))failure {
   
   [_apiClient putPath:_urlRoot
            parameters:params
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"Success");
-                success(self);
+                success(responseObject);
               }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 NSLog(@"Failure");
@@ -36,15 +37,15 @@
               }];
 }
 
--(void) saveSuccess:(void (^)(id *object))success
+-(void) saveSuccess:(void (^)(id object))success
             failure:(void (^)(NSError *error))failure {
   
-  params = [self propertiesToParams]
+  NSDictionary *params = [self propertiesToParams];
   [_apiClient putPath:_urlRoot
      parameters:params
         success:^(AFHTTPRequestOperation *operation, id responseObject) {
           NSLog(@"Success");
-          success(self);
+          success(responseObject);
         }
         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
           NSLog(@"Failure");
@@ -54,23 +55,26 @@
 
 }
 
--(void) createSuccess:(void (^)(id *object))success
-              failure:(void (^)(NSError *error))failure {
-
+-(void) createWithParams:(NSDictionary *) params
+                 success:(void (^)(id object))success
+                 failure:(void (^)(NSError *error))failure {
   
-  params = [self propertiesToParams]
+  if (nil == params) {
+    params = [self propertiesToParams];
+  }
   [_apiClient postPath:_urlRoot
-     parameters:params
-        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-          NSLog(@"Success");
-          success(self);
-        }
-        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-          NSLog(@"Failure");
-          NSLog([error description]);
-          failure(error);
-        }];
+            parameters:params
+               success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 NSLog(@"Success");
+                 success(responseObject);
+               }
+               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 NSLog(@"Failure");
+                 NSLog([error description]);
+                 failure(error);
+               }];
 }
+
 
 -(void) deleteSuccess:(void (^)(id *object))success
               failure:(void (^)(NSError *error))failure {

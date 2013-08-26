@@ -7,9 +7,8 @@
 //
 
 #import "AFHTTPClient.h"
-#import "TPUser.h"
 
-NSString *const kTPTidePoolErrorDomain = @"com.tidepool.TPTidePoolAPI";
+@class TPUser;
 
 @interface TPTidePoolClient : AFHTTPClient
 

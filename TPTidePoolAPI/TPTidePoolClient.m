@@ -9,11 +9,14 @@
 #import "TPTidePoolClient.h"
 #import "AFJSONRequestOperation.h"
 #import <SSKeychain/SSKeychain.h>
+#import "TPUser.h"
 
 @interface TPTidePoolClient()
 - (void) loadSettings;
 - (void) configureClient;
 @end
+
+NSString *const kTPTidePoolErrorDomain = @"com.tidepool.TPTidePoolAPI";
 
 @implementation TPTidePoolClient
 
@@ -123,11 +126,12 @@
                  success:(void (^)(TPUser *user))success
                  failure:(void (^)(NSError *error))failure {
   
-  NSMutableDictionary *fullParams = @{@"grant_type": @"password",
+  NSDictionary *baseParams = @{@"grant_type": @"password",
                                    @"response_type": @"password",
                                    @"client_id": self.clientId,
                                    @"client_secret": self.clientSecret
                                    };
+  NSMutableDictionary *fullParams = [NSMutableDictionary dictionaryWithDictionary:baseParams];
   [fullParams addEntriesFromDictionary:params];
   
   [self postPath:@"oauth/authorize"

@@ -8,6 +8,7 @@
 
 #import "TPTidePoolClientTests.h"
 #import "TPTestUtils.h"
+#import "TPUser.h"
 
 @implementation TPTidePoolClientTests
 - (void)setUp {
