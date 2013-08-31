@@ -21,11 +21,19 @@ NSString *const kTPGameUrlRoot = @"api/v1/users/-/games";
           success:(void (^)(TPGame *game))success
           failure:(void (^)(NSError *error))failure {
   
-  TPGame *game = [[TPGame alloc] initWithUrlRoot:kTPGameUrlRoot];
+  TPGame *game = [[TPGame alloc] initWithUrlRoot:kTPGameUrlRoot name:name];
   NSDictionary *params = @{@"def_id": name};
   [game createWithParams:params
                  success:^(id object) {
+                   NSDictionary *data = [object valueForKey:@"data"];
+                   game.stages = [data valueForKey:@"stages"];
+                   game.status = [data valueForKey:@"status"];
+                   NSString *dateTakenStr = [data valueForKey:@"date_taken"];
                    
+                   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+                   [dateFormatter setDateFormat:@"yyyy-MM-dd'T'hh:mm:ss'.'sssZZZZZ"];
+                   
+                   game.dateTaken = [dateFormatter dateFromString:dateTakenStr];
                    success(game);
                  }
                  failure:failure];
@@ -39,5 +47,7 @@ NSString *const kTPGameUrlRoot = @"api/v1/users/-/games";
   return self; 
 }
 
-
+-(void) setStages:(NSDictionary *)stages {
+  _stages = stages;
+}
 @end

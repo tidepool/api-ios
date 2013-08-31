@@ -61,6 +61,7 @@ NSString *const kTPTidePoolErrorDomain = @"com.tidepool.TPTidePoolAPI";
       _clientSecret = [settings valueForKey:@"clientSecret"];
       _apiServerURL = [settings valueForKey:@"apiServerURL"];
       _keychainServiceName = [settings valueForKey:@"keychainServiceName"];
+      _accessToken = [settings valueForKey:@"testUserToken"];
     }
     [self checkAccessToken];
     [self configureClient];

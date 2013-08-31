@@ -13,6 +13,7 @@
 		188F11CC17B96524006280D9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 188F11CA17B96524006280D9 /* InfoPlist.strings */; };
 		188F11D817B97F49006280D9 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 188F11D717B97F49006280D9 /* Settings.plist */; };
 		188F11DC17B9B543006280D9 /* TPTidePoolClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 188F11DB17B9B543006280D9 /* TPTidePoolClientTests.m */; };
+		188F11DF17CBC670006280D9 /* TPGameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 188F11DE17CBC670006280D9 /* TPGameTests.m */; };
 		9AAED9EF0A7048F3BA4515F4 /* libPods-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23FAA1ED284CBC8D88FE32 /* libPods-ios.a */; };
 		BD58504517C0ABA2005952AB /* TPTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BD58504417C0ABA2005952AB /* TPTestUtils.m */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,8 @@
 		188F11D717B97F49006280D9 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Settings.plist; path = Tests/Settings.plist; sourceTree = "<group>"; };
 		188F11DA17B9B543006280D9 /* TPTidePoolClientTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPTidePoolClientTests.h; sourceTree = "<group>"; };
 		188F11DB17B9B543006280D9 /* TPTidePoolClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPTidePoolClientTests.m; sourceTree = "<group>"; };
+		188F11DD17CBC670006280D9 /* TPGameTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPGameTests.h; sourceTree = "<group>"; };
+		188F11DE17CBC670006280D9 /* TPGameTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPGameTests.m; sourceTree = "<group>"; };
 		26B87A9FB7E24504801E3D3B /* Pods-ios.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.xcconfig"; path = "Pods/Pods-ios.xcconfig"; sourceTree = SOURCE_ROOT; };
 		6D23FAA1ED284CBC8D88FE32 /* libPods-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58504317C0ABA2005952AB /* TPTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPTestUtils.h; sourceTree = "<group>"; };
@@ -87,6 +90,8 @@
 				188F11DB17B9B543006280D9 /* TPTidePoolClientTests.m */,
 				BD58504317C0ABA2005952AB /* TPTestUtils.h */,
 				BD58504417C0ABA2005952AB /* TPTestUtils.m */,
+				188F11DD17CBC670006280D9 /* TPGameTests.h */,
+				188F11DE17CBC670006280D9 /* TPGameTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -222,6 +227,7 @@
 			files = (
 				188F11DC17B9B543006280D9 /* TPTidePoolClientTests.m in Sources */,
 				BD58504517C0ABA2005952AB /* TPTestUtils.m in Sources */,
+				188F11DF17CBC670006280D9 /* TPGameTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

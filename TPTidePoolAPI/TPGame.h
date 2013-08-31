@@ -13,6 +13,8 @@
 
 @property(nonatomic, readonly) NSString *name;
 @property(nonatomic, readonly) NSDictionary *stages;
+@property(nonatomic, retain) NSString *status;
+@property(nonatomic, retain) NSDate *dateTaken;
 
 +(void) startGame:(NSString *) name
           success:(void (^)(TPGame *game))success

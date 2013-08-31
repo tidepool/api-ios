@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>clientID</key>
-	<string>3e372449d494eb6dc7d74cd3da1d6eedd50c7d98f3dedf1caf02960a9a260fb1</string>
+	<string>511894b34ff01aed0670f975b6d63de5c5662b79e03642cc0a1b761f59614ac3</string>
 	<key>clientSecret</key>
-	<string>3e4da2177beee0d8ec458480526b3716047b3ff0df3362262183f6841253a706</string>
+	<string>71478551681faff8bf8ffc035e8e573afc9b986a80bf5ce047aa11171dd6dbc9</string>
+	<key>testUserToken</key>
+	<string>5dc238aca744d4fbf87007e7eee16d774cfb20b80b1020a88fd19fa530167e66</string>
 	<key>apiServerURL</key>
 	<string>http://api-server.dev/</string>
 	<key>apiEndpoint</key>
