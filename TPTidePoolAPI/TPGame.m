@@ -12,7 +12,10 @@ NSString *const kTPGameUrlRoot = @"api/v1/users/-/games";
 
 @interface TPGame()
 -(id) initWithUrlRoot:(NSString *) urlRoot name:(NSString *)name;
--(void) setStages:(NSDictionary *) stages;
+-(void) setStages:(NSArray *) stages;
+
+@property(nonatomic, retain) NSMutableArray *events;
+
 @end
 
 @implementation TPGame
@@ -27,6 +30,7 @@ NSString *const kTPGameUrlRoot = @"api/v1/users/-/games";
                  success:^(id object) {
                    NSDictionary *data = [object valueForKey:@"data"];
                    game.stages = [data valueForKey:@"stages"];
+                   [game setupEvents:game.stages.count];
                    game.status = [data valueForKey:@"status"];
                    NSString *dateTakenStr = [data valueForKey:@"date_taken"];
                    
@@ -47,7 +51,44 @@ NSString *const kTPGameUrlRoot = @"api/v1/users/-/games";
   return self; 
 }
 
--(void) setStages:(NSDictionary *)stages {
+-(void) setupEvents:(NSUInteger) count {
+  self.events = [NSMutableArray arrayWithCapacity:count];
+  for (NSUInteger i = 0; i < count) {
+    NSMutableDictionary *userEvent = @{@"event_type", game
+    [self.events insertObject:<#(id)#> atIndex:i];
+  }
+}
+
+-(void) setStages:(NSArray *)stages {
   _stages = stages;
+}
+
+- (void) addUserEvent:(NSDictionary *)userEvent stage:(NSUInteger) stageNo {
+  if (stageNo >= self.events.count){
+    return;
+  }
+  [self.events insertObject:userEvent atIndex:stageNo];
+}
+
+-(void) sendEventsSuccess:(void (^)(TPGame *game))success
+                  failure:(void (^)(NSError *error))failure {
+  NSString *path = [NSString stringWithFormat:@"%@/event_log", self.urlRoot];
+  [_apiClient putPath:path
+           parameters:self.events
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"Success");
+                success(responseObject);
+              }
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"Failure");
+                NSLog([error description]);
+                failure(error);
+              }];
+
+}
+
+-(void) calculateResultsSuccess:(void (^)(NSArray *results))success
+                        failure:(void (^)(NSError *error))failure {
+  
 }
 @end

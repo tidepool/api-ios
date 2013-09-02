@@ -12,7 +12,7 @@
 @interface TPGame : TPBase
 
 @property(nonatomic, readonly) NSString *name;
-@property(nonatomic, readonly) NSDictionary *stages;
+@property(nonatomic, readonly) NSArray *stages;
 @property(nonatomic, retain) NSString *status;
 @property(nonatomic, retain) NSDate *dateTaken;
 
@@ -20,7 +20,7 @@
           success:(void (^)(TPGame *game))success
           failure:(void (^)(NSError *error))failure;
 
--(void) addUserEvent:(NSDictionary *) userEvent;
+-(void) addUserEvent:(NSDictionary *) userEvent stage:(NSUInteger) stageNo;
 -(void) sendEventsSuccess:(void (^)(TPGame *game))success
                   failure:(void (^)(NSError *error))failure;
 

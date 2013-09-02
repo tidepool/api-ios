@@ -27,7 +27,6 @@
 }
 
 - (void)testStartingBaselineGame {
-    
   __block NSString *name = nil;
   [TPGame startGame:@"baseline"
             success:^(TPGame *game) {
@@ -38,8 +37,18 @@
             }
    
    ];
-  
   expect(name).will.equal(@"baseline");
+}
+
+- (void) testSendingUserEvents {
+  [TPGame startGame:@"snoozers"
+            success:^(TPGame *game){
+              [game addUserEvent:<#(NSDictionary *)#> stage:<#(NSUInteger)#>];
+              
+            }
+            failure:^(NSError *error) {
+              
+            }];
 }
 
 

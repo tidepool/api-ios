@@ -28,6 +28,18 @@
       <FileRef
          location = "group:TPGame.m">
       </FileRef>
+      <FileRef
+         location = "group:NSString+InflectionSupport.h">
+      </FileRef>
+      <FileRef
+         location = "group:NSString+InflectionSupport.m">
+      </FileRef>
+      <FileRef
+         location = "group:TPResult.h">
+      </FileRef>
+      <FileRef
+         location = "group:TPResult.m">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:TPTidePoolAPITests/TPTidePoolAPITests.xcodeproj">
