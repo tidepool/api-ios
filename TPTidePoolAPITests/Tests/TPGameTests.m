@@ -43,7 +43,6 @@
 - (void) testSendingUserEvents {
   [TPGame startGame:@"snoozers"
             success:^(TPGame *game){
-              [game addUserEvent:<#(NSDictionary *)#> stage:<#(NSUInteger)#>];
               
             }
             failure:^(NSError *error) {

@@ -22,6 +22,6 @@ Pod::Spec.new do |s|
   s.frameworks = 'MobileCoreServices', 'SystemConfiguration', 'Security', 'CoreGraphics'
   s.requires_arc = true
   # s.xcconfig = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2' }
-  s.dependency 'AFNetworking', '~> 1.3'
+  s.dependency 'AFNetworking', '~> 2.0'
   s.dependency 'SSKeychain', '~> 1.2'
 end

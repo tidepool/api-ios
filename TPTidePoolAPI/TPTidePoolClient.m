@@ -7,12 +7,12 @@
 //
 
 #import "TPTidePoolClient.h"
-#import "AFJSONRequestOperation.h"
+#import <AFNetworking.h>
 #import <SSKeychain/SSKeychain.h>
 #import "TPUser.h"
+#import "TPSettings.h"
 
 @interface TPTidePoolClient()
-- (void) loadSettings;
 - (void) configureClient;
 @end
 
@@ -24,36 +24,25 @@ NSString *const kTPTidePoolErrorDomain = @"com.tidepool.TPTidePoolAPI";
   static dispatch_once_t once;
   static id sharedInstance;
   dispatch_once(&once, ^{
-    NSDictionary *settings = [TPTidePoolClient loadSettings];
+    NSDictionary *settings = [TPSettings loadSettings];
     NSURL *baseURL = nil;
     if (settings) {
       baseURL = [NSURL URLWithString:[settings valueForKey:@"apiServerURL"]];
     }
-    sharedInstance = [[self alloc] initWithBaseURL:baseURL andSettings:settings];
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    sharedInstance = [[self alloc] initWithBaseURL:baseURL sessionConfiguration:configuration settings:settings];
   });
   return sharedInstance;
   
 }
 
-+ (NSDictionary *) loadSettings {
-  NSString *filePath = [[NSBundle bundleForClass: [TPTidePoolClient class]] pathForResource:@"Settings" ofType:@"plist"];
-  NSData *pListData = [NSData dataWithContentsOfFile:filePath];
-  NSPropertyListFormat format;
-  NSString *error;
-  NSDictionary *settings = (NSDictionary *) [NSPropertyListSerialization propertyListFromData:pListData
-                                                                             mutabilityOption:NSPropertyListImmutable
-                                                                                       format:&format
-                                                                             errorDescription:&error];
-
-  return settings;
-}
-
-
-- (id) initWithBaseURL:baseURL andSettings:settings {
+- (id) initWithBaseURL:(NSURL *) baseURL
+  sessionConfiguration:(NSURLSessionConfiguration *) configuration
+              settings:(NSDictionary *) settings {
     // Initialize from plist file which contains the API Secret.
     // Do not checkin the API secrets to Github
   
-  self = [super initWithBaseURL:baseURL];
+  self = [super initWithBaseURL:baseURL sessionConfiguration: configuration];
 	if (self != nil) {
     _accessToken = nil;
     if (settings) {

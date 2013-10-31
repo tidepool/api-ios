@@ -40,6 +40,12 @@
       <FileRef
          location = "group:TPResult.m">
       </FileRef>
+      <FileRef
+         location = "group:TPSettings.h">
+      </FileRef>
+      <FileRef
+         location = "group:TPSettings.m">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:TPTidePoolAPITests/TPTidePoolAPITests.xcodeproj">

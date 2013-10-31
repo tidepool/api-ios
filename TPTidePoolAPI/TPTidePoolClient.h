@@ -6,11 +6,11 @@
 //
 //
 
-#import "AFHTTPClient.h"
+#import <AFNetworking.h>
 
 @class TPUser;
 
-@interface TPTidePoolClient : AFHTTPClient
+@interface TPTidePoolClient : AFHTTPSessionManager
 
 + (id)sharedInstance;
 
@@ -19,6 +19,10 @@
 @property(nonatomic, readonly) NSString *accessToken;
 @property(nonatomic, readonly) NSString *apiServerURL;
 @property(nonatomic, readonly) NSString *keychainServiceName;
+
+- (id) initWithBaseURL:(NSURL *) baseURL
+  sessionConfiguration:(NSURLSessionConfiguration *) configuration
+              settings:(NSDictionary *) settings;
 
 - (BOOL) isLoggedIn;
 - (void) loginWithEmail:(NSString *) email
