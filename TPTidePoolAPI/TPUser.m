@@ -13,7 +13,7 @@ NSString *const kTPUserUrlRoot = @"api/v1/users/";
 @implementation TPUser
 
 -(id) initWithUserHash:(NSDictionary *) userHash {
-  self = [super initWithUrlRoot:kTPUserUrlRoot];
+  self = [super init];
   if (self != nil) {
     _userId = [userHash valueForKey:@"id"];
     _email = [userHash valueForKey:@"email"];

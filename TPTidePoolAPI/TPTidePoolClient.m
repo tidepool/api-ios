@@ -7,7 +7,6 @@
 //
 
 #import "TPTidePoolClient.h"
-#import <AFNetworking.h>
 #import <SSKeychain/SSKeychain.h>
 #import "TPUser.h"
 #import "TPSettings.h"
@@ -50,7 +49,9 @@ NSString *const kTPTidePoolErrorDomain = @"com.tidepool.TPTidePoolAPI";
       _clientSecret = [settings valueForKey:@"clientSecret"];
       _apiServerURL = [settings valueForKey:@"apiServerURL"];
       _keychainServiceName = [settings valueForKey:@"keychainServiceName"];
-      _accessToken = [settings valueForKey:@"testUserToken"];
+      _accessToken = nil;
+//      _accessToken = [settings valueForKey:@"testUserToken"];
+      _testAccessToken = [settings valueForKey:@"testUserToken"];
     }
     [self checkAccessToken];
     [self configureClient];
@@ -64,16 +65,23 @@ NSString *const kTPTidePoolErrorDomain = @"com.tidepool.TPTidePoolAPI";
 
 - (void) checkAccessToken {
   _accessToken = [SSKeychain passwordForService:_keychainServiceName account:_keychainServiceName];
+  if (_accessToken) {
+    [self setAuthorizationHTTPField:_accessToken];
+  }
 }
 
 - (void) configureClient {
-  [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-	[self setDefaultHeader:@"Accept" value:@"application/json"];
-	[self setDefaultHeader:@"Content-type" value:@"application/json"];
+  AFHTTPRequestSerializer *requestSerializer = self.requestSerializer;
+  
+  [requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+  [requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
   if (_accessToken) {
-    [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", _accessToken]];
+    [self setAuthorizationHTTPField:_accessToken];
   }
-  [self setParameterEncoding:AFJSONParameterEncoding];
+}
+
+- (void) setAuthorizationHTTPField:(NSString *)accessToken {
+  [self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"Authorization"];
 }
 
 - (void) loginWithEmail:(NSString *) email
@@ -124,34 +132,30 @@ NSString *const kTPTidePoolErrorDomain = @"com.tidepool.TPTidePoolAPI";
   NSMutableDictionary *fullParams = [NSMutableDictionary dictionaryWithDictionary:baseParams];
   [fullParams addEntriesFromDictionary:params];
   
-  [self postPath:@"oauth/authorize"
-      parameters:fullParams
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-           NSLog(@"Success");
-           TPUser *user = nil;
-           _accessToken = [responseObject valueForKey:@"access_token"];
-           if (_accessToken) {
-             [SSKeychain setPassword:_accessToken forService:_keychainServiceName account:_keychainServiceName];
-             [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", _accessToken]];
-             user = [self retrieveUserFromResponse:responseObject];
-             success(user);
-           }
-           else {
-             NSString *desc = NSLocalizedString(@"Unable to retrieve access token", @"");
-             NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : desc };
-             
-             NSError *error = [NSError errorWithDomain:kTPTidePoolErrorDomain
-                                                  code:-101
-                                              userInfo:userInfo];
-             failure(error);
-           }
-         }
-         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-           NSLog(@"Failure");
-           NSLog([error description]);
-           failure(error);
-         }];
-  
+  [self POST:@"oauth/authorize" parameters:fullParams
+     success:^(NSURLSessionDataTask *task, id responseObject) {
+       NSLog(@"Success");
+       TPUser *user = nil;
+       _accessToken = [responseObject valueForKey:@"access_token"];
+       if (_accessToken) {
+         [SSKeychain setPassword:_accessToken forService:_keychainServiceName account:_keychainServiceName];
+         [self.requestSerializer setAuthorizationHeaderFieldWithToken:[NSString stringWithFormat:@"Bearer %@", _accessToken]];
+         user = [self retrieveUserFromResponse:responseObject];
+         success(user);
+       }
+       else {
+         NSString *desc = NSLocalizedString(@"Unable to retrieve access token", @"");
+         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : desc };
+         
+         NSError *error = [NSError errorWithDomain:kTPTidePoolErrorDomain code:-101 userInfo:userInfo];
+         failure(error);
+       }
+     }
+     failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Failure");
+        NSLog([error description]);
+        failure(error);
+      }];
 }
 
 - (TPUser *) retrieveUserFromResponse:(id) responseObject {

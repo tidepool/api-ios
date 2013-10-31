@@ -9,15 +9,17 @@
 #import "TPGameTests.h"
 #import "TPTestUtils.h"
 #import "TPGame.h"
+#import <SSKeychain/SSKeychain.h>
 
 @implementation TPGameTests
 
 - (void)setUp {
   [super setUp];
   
-    // Set-up code here.
+  TPTidePoolClient *client = [TPTidePoolClient sharedInstance];
+  [SSKeychain setPassword:client.testAccessToken forService:client.keychainServiceName account:client.keychainServiceName];
+  [client checkAccessToken];
   [Expecta setAsynchronousTestTimeout:5];
-
 }
 
 - (void)tearDown {
@@ -33,7 +35,7 @@
               name = game.name;
             }
             failure:^(NSError *error) {
-              
+              NSLog(@"%@", [error description]);
             }
    
    ];
@@ -41,7 +43,7 @@
 }
 
 - (void) testSendingUserEvents {
-  [TPGame startGame:@"snoozers"
+  [TPGame startGame:@"snoozer"
             success:^(TPGame *game){
               
             }

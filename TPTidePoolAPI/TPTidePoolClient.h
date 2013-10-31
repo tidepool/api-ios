@@ -5,8 +5,9 @@
 //  Created by Kerem Karatal on 8/12/13.
 //
 //
+#import <Foundation/Foundation.h>
+#import <AFNetworking/AFNetworking.h>
 
-#import <AFNetworking.h>
 
 @class TPUser;
 
@@ -17,6 +18,7 @@
 @property(nonatomic, readonly) NSString *clientId;
 @property(nonatomic, readonly) NSString *clientSecret;
 @property(nonatomic, readonly) NSString *accessToken;
+@property(nonatomic, readonly) NSString *testAccessToken;
 @property(nonatomic, readonly) NSString *apiServerURL;
 @property(nonatomic, readonly) NSString *keychainServiceName;
 
@@ -25,6 +27,8 @@
               settings:(NSDictionary *) settings;
 
 - (BOOL) isLoggedIn;
+- (void) checkAccessToken;
+
 - (void) loginWithEmail:(NSString *) email
                password:(NSString *) password
                 success:(void (^)(TPUser *user))success

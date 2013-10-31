@@ -7,7 +7,7 @@
 	<key>clientSecret</key>
 	<string>71478551681faff8bf8ffc035e8e573afc9b986a80bf5ce047aa11171dd6dbc9</string>
 	<key>testUserToken</key>
-	<string>5dc238aca744d4fbf87007e7eee16d774cfb20b80b1020a88fd19fa530167e66</string>
+	<string>dd7da3d463f7b65e79e9660620a47a137ae4d264fe55705fd2ec5030adf3238b</string>
 	<key>apiServerURL</key>
 	<string>http://api-server.dev/</string>
 	<key>apiEndpoint</key>

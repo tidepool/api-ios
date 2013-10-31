@@ -76,12 +76,14 @@ static NSMutableDictionary *cachedCamelized;
 }
 
 - (NSString*)camelizeCached {
-  if (cachedCamelized == nil)
+  if (cachedCamelized == nil) {
     cachedCamelized = [NSMutableDictionary dictionary];
+  }
   else {
     NSString* cached = [cachedCamelized objectForKey:self];
-    if (cached != nil)
+    if (cached != nil) {
       return cached;
+    }
   }
   
   NSString* camelized = [self camelize];

@@ -17,12 +17,6 @@
          location = "group:TPTidePoolClient.m">
       </FileRef>
       <FileRef
-         location = "group:TPBase.h">
-      </FileRef>
-      <FileRef
-         location = "group:TPBase.m">
-      </FileRef>
-      <FileRef
          location = "group:TPGame.h">
       </FileRef>
       <FileRef
@@ -45,6 +39,12 @@
       </FileRef>
       <FileRef
          location = "group:TPSettings.m">
+      </FileRef>
+      <FileRef
+         location = "group:TPUtil.h">
+      </FileRef>
+      <FileRef
+         location = "group:TPUtil.m">
       </FileRef>
    </Group>
    <FileRef

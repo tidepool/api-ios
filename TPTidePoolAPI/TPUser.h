@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TPBase.h"
 
-@interface TPUser : TPBase
+@interface TPUser : NSObject
 
 @property(nonatomic, retain) NSString *userId;
 @property(nonatomic, retain) NSString *email;

@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TPBase.h"
 
-@interface TPGame : TPBase
+@interface TPGame : NSObject
 
 @property(nonatomic, readonly) NSString *name;
 @property(nonatomic, readonly) NSArray *stages;
